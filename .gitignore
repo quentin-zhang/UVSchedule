@@ -26,3 +26,4 @@
 
 ### custom ###
 /src/main/resources/application.yml
+/resources/jdbc.properties

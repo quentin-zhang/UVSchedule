@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper  namespace="com.tenghu.object.Users">
+
+    <!-- 活跃用户数 -->
+    <insert id="insertActiveUser" parameterType="com.uv.entity.CPEPActiveUserCount">
+  		insert into CPEPActiveUserPerday (enterpriseID,activeUserCount,collectTime) values(#{enterpriseID},#{userCount},#{collectTime})
+  	</insert>
+
+    <!-- PV数 -->
+    <insert id="insertPV" parameterType="com.uv.entity.CPEPPVCount">
+  		insert into CPEPPVPerDay (enterpriseID,pvCount,collectTime) values(#{enterpriseID},#{pvCount},#{collectTime})
+  	</insert>
+
+    <!-- 异常数 -->
+    <insert id="insertException" parameterType="com.uv.entity.CPEPExceptionCount">
+  		insert into CPEPExceptionPerDay (enterpriseID,exceptionCount,collectTime) values(#{enterpriseID},#{exCount},#{collectTime})
+  	</insert>
+</mapper>
