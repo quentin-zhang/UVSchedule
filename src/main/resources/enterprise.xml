@@ -4,18 +4,33 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper  namespace="com.tenghu.object.Users">
 
-    <!-- 活跃用户数 -->
+    <!-- 日活跃用户数 -->
     <insert id="insertActiveUser" parameterType="com.uv.entity.CPEPActiveUserCount">
   		insert into CPEPActiveUserPerday (enterpriseID,activeUserCount,collectTime) values(#{enterpriseID},#{userCount},#{collectTime})
   	</insert>
 
-    <!-- PV数 -->
+    <!-- 日PV数 -->
     <insert id="insertPV" parameterType="com.uv.entity.CPEPPVCount">
   		insert into CPEPPVPerDay (enterpriseID,pvCount,collectTime) values(#{enterpriseID},#{pvCount},#{collectTime})
   	</insert>
 
-    <!-- 异常数 -->
+    <!-- 日异常数 -->
     <insert id="insertException" parameterType="com.uv.entity.CPEPExceptionCount">
   		insert into CPEPExceptionPerDay (enterpriseID,exceptionCount,collectTime) values(#{enterpriseID},#{exCount},#{collectTime})
+  	</insert>
+
+	<!-- 月活跃用户数 -->
+	<insert id="insertMonthActiveUser" parameterType="com.uv.entity.CPEPActiveUserCount">
+  		insert into CPEPActiveUserPerMonth (enterpriseID,activeUserCount,collectTime) values(#{enterpriseID},#{userCount},#{collectTime})
+  	</insert>
+
+	<!-- 月PV数 -->
+	<insert id="insertMonthPV" parameterType="com.uv.entity.CPEPPVCount">
+  		insert into CPEPPVPerMonth (enterpriseID,pvCount,collectTime) values(#{enterpriseID},#{pvCount},#{collectTime})
+  	</insert>
+
+	<!-- 月异常数 -->
+	<insert id="insertMonthException" parameterType="com.uv.entity.CPEPExceptionCount">
+  		insert into CPEPExceptionPerMonth (enterpriseID,exceptionCount,collectTime) values(#{enterpriseID},#{exCount},#{collectTime})
   	</insert>
 </mapper>

@@ -47,4 +47,53 @@ public class MSSQLService {
         // 关闭SqlSession对象
         MyBatisUtil.closeSqlSession(session);
     }
+
+
+
+
+
+
+
+
+
+
+
+    //所有企业昨天的活跃用户数
+    public void insertMonthActiveUserCount(List<CPEPActiveUserCount> auCountList, String startTime) {
+        // 获取SqlSession对象
+        SqlSession session = MyBatisUtil.getSqlSession();
+        for (CPEPActiveUserCount uc : auCountList) {
+            uc.setCollectTime(startTime);
+            session.insert("insertMonthActiveUser", uc);
+        }
+        session.commit();
+        // 关闭SqlSession对象
+        MyBatisUtil.closeSqlSession(session);
+    }
+
+    //所有企业昨天的活跃用户数
+    public void insertMonthPVCount(List<CPEPPVCount> auCountList, String startTime) {
+        // 获取SqlSession对象
+        SqlSession session = MyBatisUtil.getSqlSession();
+        for (CPEPPVCount uc : auCountList) {
+            uc.setCollectTime(startTime);
+            session.insert("insertMonthPV", uc);
+        }
+        session.commit();
+        // 关闭SqlSession对象
+        MyBatisUtil.closeSqlSession(session);
+    }
+
+    //所有企业昨天的异常数
+    public void insertMonthEXCount(List<CPEPExceptionCount> auCountList, String startTime) {
+        // 获取SqlSession对象
+        SqlSession session = MyBatisUtil.getSqlSession();
+        for (CPEPExceptionCount uc : auCountList) {
+            uc.setCollectTime(startTime);
+            session.insert("insertMonthException", uc);
+        }
+        session.commit();
+        // 关闭SqlSession对象
+        MyBatisUtil.closeSqlSession(session);
+    }
 }
