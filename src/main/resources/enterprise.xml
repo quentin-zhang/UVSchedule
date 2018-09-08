@@ -33,4 +33,20 @@
 	<insert id="insertMonthException" parameterType="com.uv.entity.CPEPExceptionCount">
   		insert into CPEPExceptionPerMonth (enterpriseID,exceptionCount,collectTime) values(#{enterpriseID},#{exCount},#{collectTime})
   	</insert>
+
+	<!-- 日活跃用户汇总数 -->
+	<insert id="insertActiveUserSUM" parameterType="com.uv.entity.CPEPActiveUserCount">
+  		insert into CPSUMActiveUserPerDay (activeUserCount,collectTime) values(#{userCount},#{collectTime})
+  	</insert>
+
+	<!-- 日PV汇总数 -->
+	<insert id="insertPVSUM" parameterType="com.uv.entity.CPEPPVCount">
+  		insert into CPSUMPVPerDay (pvCount,collectTime) values(#{pvCount},#{collectTime})
+  	</insert>
+
+	<!-- 日异常汇总数 -->
+	<insert id="insertExceptionSUM" parameterType="com.uv.entity.CPEPExceptionCount">
+  		insert into CPSUMExceptionPerDay (exceptionCount,collectTime) values(#{exCount},#{collectTime})
+  	</insert>
+
 </mapper>
