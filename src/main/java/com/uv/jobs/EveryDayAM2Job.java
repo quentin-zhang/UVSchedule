@@ -2,19 +2,20 @@ package com.uv.jobs;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.uv.entity.CPEPActiveUserCount;
-import com.uv.entity.CPEPExceptionCount;
-import com.uv.entity.CPEPPVCount;
+import com.uv.entity.*;
 import com.uv.services.AliESService;
 import com.uv.services.MSSQLService;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,7 @@ import java.util.List;
 @Component
 public class EveryDayAM2Job implements Job {
     private AliESService aliESService;
-
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
         JobDataMap map = jobExecutionContext.getMergedJobDataMap();
@@ -37,16 +38,18 @@ public class EveryDayAM2Job implements Job {
         yesterdayPVCountPost();
         //昨日异常数
         yesterdayExceptionCountPost();
+        //昨日超时异常总数
+        yesterdayTimeoutExceptionCountPost();
     }
 
     /*昨日活跃用户数*/
     private void yesterdayActiveUserCountPost() {
         try {
             List<CPEPActiveUserCount> auCount = new ArrayList<CPEPActiveUserCount>();
-            LocalDate yesterday = LocalDate.now().minusDays(1);
-            LocalDate today = LocalDate.now();
-            String yesterdayStr = yesterday.format(DateTimeFormatter.ISO_DATE).toString();
-            String todayStr = today.format(DateTimeFormatter.ISO_DATE).toString();
+            LocalDateTime yesterday = LocalDate.now().minusDays(1).atStartOfDay();
+            LocalDateTime today = LocalDate.now().atStartOfDay();
+            String yesterdayStr = yesterday.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString();
+            String todayStr = today.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString();
             auCount = aliESService.getActiveUserCount(yesterdayStr, todayStr);
             MSSQLService service = new MSSQLService();
             service.insertYesterdayActiveUserCount(auCount, yesterdayStr);
@@ -69,10 +72,10 @@ public class EveryDayAM2Job implements Job {
     /*昨日PV数获取*/
     public void yesterdayPVCountPost() {
         try {
-            LocalDate yesterday = LocalDate.now().minusDays(1);
-            LocalDate today = LocalDate.now();
-            String yesterdayStr = yesterday.format(DateTimeFormatter.ISO_DATE).toString();
-            String todayStr = today.format(DateTimeFormatter.ISO_DATE).toString();
+            LocalDateTime yesterday = LocalDate.now().minusDays(1).atStartOfDay();
+            LocalDateTime today = LocalDate.now().atStartOfDay();
+            String yesterdayStr = yesterday.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString();
+            String todayStr = today.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString();
             List<CPEPPVCount> pvCount = new ArrayList<CPEPPVCount>();
             pvCount = aliESService.gePVCount(yesterdayStr, todayStr);
             MSSQLService service = new MSSQLService();
@@ -95,10 +98,10 @@ public class EveryDayAM2Job implements Job {
     public void yesterdayExceptionCountPost() {
         try {
             List<CPEPExceptionCount> auCount = new ArrayList<CPEPExceptionCount>();
-            LocalDate yesterday = LocalDate.now().minusDays(1);
-            LocalDate today = LocalDate.now();
-            String yesterdayStr = yesterday.format(DateTimeFormatter.ISO_DATE).toString();
-            String todayStr = today.format(DateTimeFormatter.ISO_DATE).toString();
+            LocalDateTime yesterday = LocalDate.now().minusDays(1).atStartOfDay();
+            LocalDateTime today = LocalDate.now().atStartOfDay();
+            String yesterdayStr = yesterday.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString();
+            String todayStr = today.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString();
             auCount = aliESService.getExceptionCount(yesterdayStr, todayStr);
             MSSQLService service = new MSSQLService();
             service.insertYesterdayEXCount(auCount, yesterdayStr);
@@ -111,6 +114,31 @@ public class EveryDayAM2Job implements Job {
             sumOne.setExCount(totalCount);
             sumList.add(sumOne);
             service.insertYesterdaySumEXCount(sumList,yesterdayStr);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /*昨日超时异常总数获取*/
+    public void yesterdayTimeoutExceptionCountPost() {
+        try {
+            ConditionCount auCount = new ConditionCount();
+            List<CPTimeOutExceptionPerDay> auCountList = new ArrayList<CPTimeOutExceptionPerDay>();
+            LocalDateTime yesterday = LocalDate.now().minusDays(1).atStartOfDay();
+            LocalDateTime today = LocalDate.now().atStartOfDay();
+            String yesterdayStr = yesterday.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString();
+            String todayStr = today.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString();
+            logger.info("yesterdaystr is : " + yesterdayStr);
+            logger.info("todayStr is : " + todayStr);
+            auCount = aliESService.getTimeoutExceptionCount(yesterdayStr, todayStr);
+
+            CPTimeOutExceptionPerDay one = new CPTimeOutExceptionPerDay();
+            one.setCollectTime(yesterdayStr);
+            one.setExCount(Integer.valueOf(auCount.getTotal()));
+            auCountList.add(one);
+            MSSQLService service = new MSSQLService();
+            service.insertYesterdayTimeoutEXCount(auCountList, yesterdayStr);
+
         } catch (IOException e) {
             e.printStackTrace();
         }

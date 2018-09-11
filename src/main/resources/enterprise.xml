@@ -49,4 +49,8 @@
   		insert into CPSUMExceptionPerDay (exceptionCount,collectTime) values(#{exCount},#{collectTime})
   	</insert>
 
+	<!-- 日超时异常汇总数 -->
+	<insert id="insertTimeoutExceptionSUM" parameterType="com.uv.entity.CPTimeOutExceptionPerDay">
+  		insert into CPTimeOutExceptionPerDay (exceptionCount,collectTime) values(#{exCount},#{collectTime})
+  	</insert>
 </mapper>

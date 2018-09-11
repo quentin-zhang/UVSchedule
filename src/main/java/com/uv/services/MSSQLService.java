@@ -3,6 +3,7 @@ package com.uv.services;
 import com.uv.entity.CPEPActiveUserCount;
 import com.uv.entity.CPEPExceptionCount;
 import com.uv.entity.CPEPPVCount;
+import com.uv.entity.CPTimeOutExceptionPerDay;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Component;
 
@@ -47,8 +48,6 @@ public class MSSQLService {
         // 关闭SqlSession对象
         MyBatisUtil.closeSqlSession(session);
     }
-
-
 
 
 
@@ -133,6 +132,20 @@ public class MSSQLService {
         for (CPEPExceptionCount uc : auCountList) {
             uc.setCollectTime(startTime);
             session.insert("insertExceptionSUM", uc);
+        }
+        session.commit();
+        // 关闭SqlSession对象
+        MyBatisUtil.closeSqlSession(session);
+    }
+
+
+    //所有超时异常数
+    public void insertYesterdayTimeoutEXCount(List<CPTimeOutExceptionPerDay> auCountList, String startTime) {
+        // 获取SqlSession对象
+        SqlSession session = MyBatisUtil.getSqlSession();
+        for (CPTimeOutExceptionPerDay uc : auCountList) {
+            uc.setCollectTime(startTime);
+            session.insert("insertTimeoutExceptionSUM", uc);
         }
         session.commit();
         // 关闭SqlSession对象

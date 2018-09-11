@@ -2,9 +2,7 @@ package com.uv.services;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.uv.entity.CPEPActiveUserCount;
-import com.uv.entity.CPEPExceptionCount;
-import com.uv.entity.CPEPPVCount;
+import com.uv.entity.*;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -33,6 +31,9 @@ public class AliESService {
     private String eppvurl ;
     @Value("${bootstrap.epexurl}")
     private String epexurl ;
+    @Value("${bootstrap.conditionurl}")
+    private String conditionurl ;
+
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Bean
@@ -145,6 +146,45 @@ public class AliESService {
 
         List<CPEPExceptionCount> auCountList = gson.fromJson(result.toString(), new TypeToken<List<CPEPExceptionCount>>() {
         }.getType());
+
+        return auCountList;
+    }
+
+    //获取超时异常数
+    public ConditionCount  getTimeoutExceptionCount(String startTime, String endTime) throws IOException {
+        HttpClient client = HttpClientBuilder.create().build();
+        HttpPost post = new HttpPost(this.conditionurl);
+
+        Map<String, String> myMap = new HashMap<String, String>();
+        myMap.put("startTime", startTime);
+        myMap.put("endTime", endTime);
+        myMap.put("indexName", "cloudplus-exception-*");
+        myMap.put("timeKey", "happenTime");
+        myMap.put("conditionKey", "errorCode.keyword");
+        myMap.put("conditionValue", "-1001");
+
+        Gson gson = new Gson();
+        String json = gson.toJson(myMap);
+        StringEntity entity = new StringEntity(json);
+
+        post.setEntity(entity);
+        post.setHeader("Accept", "application/json");
+        post.setHeader("Content-type", "application/json");
+
+        HttpResponse response = client.execute(post);
+        logger.info("Response Code : "
+                + response.getStatusLine().getStatusCode());
+
+        BufferedReader rd = new BufferedReader(
+                new InputStreamReader(response.getEntity().getContent()));
+
+        StringBuffer result = new StringBuffer();
+        String line = "";
+        while ((line = rd.readLine()) != null) {
+            result.append(line);
+        }
+
+        ConditionCount auCountList = gson.fromJson(result.toString(), ConditionCount.class);
 
         return auCountList;
     }
