@@ -1,9 +1,6 @@
 package com.uv.services;
 
-import com.uv.entity.CPEPActiveUserCount;
-import com.uv.entity.CPEPExceptionCount;
-import com.uv.entity.CPEPPVCount;
-import com.uv.entity.CPTimeOutExceptionPerDay;
+import com.uv.entity.*;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Component;
 
@@ -151,4 +148,18 @@ public class MSSQLService {
         // 关闭SqlSession对象
         MyBatisUtil.closeSqlSession(session);
     }
+
+    //近30天所有用户与PV数
+    public void insertCPUserPV(List<CPUserPV> auCountList) {
+        // 获取SqlSession对象
+        SqlSession session = MyBatisUtil.getBatchSqlSession();
+        session.delete("deleteCPUserPV");
+        for (CPUserPV uc : auCountList) {
+            session.insert("insertCPUserPV", uc);
+        }
+        session.commit();
+        // 关闭SqlSession对象
+        MyBatisUtil.closeSqlSession(session);
+    }
+
 }

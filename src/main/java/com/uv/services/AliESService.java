@@ -33,6 +33,8 @@ public class AliESService {
     private String epexurl ;
     @Value("${bootstrap.conditionurl}")
     private String conditionurl ;
+    @Value("${bootstrap.userurl}")
+    private String userurl ;
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -185,6 +187,41 @@ public class AliESService {
         }
 
         ConditionCount auCountList = gson.fromJson(result.toString(), ConditionCount.class);
+
+        return auCountList;
+    }
+
+    //获取用户与PV数详情
+    public List<CPUserPV>   getCPUserPV(String startTime, String endTime) throws IOException {
+        HttpClient client = HttpClientBuilder.create().build();
+        HttpPost post = new HttpPost(this.userurl);
+
+        Map<String, String> myMap = new HashMap<String, String>();
+        myMap.put("startTime", startTime);
+        myMap.put("endTime", endTime);
+        Gson gson = new Gson();
+        String json = gson.toJson(myMap);
+        StringEntity entity = new StringEntity(json);
+
+        post.setEntity(entity);
+        post.setHeader("Accept", "application/json");
+        post.setHeader("Content-type", "application/json");
+
+        HttpResponse response = client.execute(post);
+        logger.info("Response Code : "
+                + response.getStatusLine().getStatusCode());
+
+        BufferedReader rd = new BufferedReader(
+                new InputStreamReader(response.getEntity().getContent()));
+
+        StringBuffer result = new StringBuffer();
+        String line = "";
+        while ((line = rd.readLine()) != null) {
+            result.append(line);
+        }
+
+        List<CPUserPV> auCountList = gson.fromJson(result.toString(), new TypeToken<List<CPUserPV>>() {
+        }.getType());
 
         return auCountList;
     }

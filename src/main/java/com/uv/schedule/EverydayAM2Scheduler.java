@@ -4,6 +4,7 @@ package com.uv.schedule;
 import com.uv.jobs.EveryDayAM2Job;
 import com.uv.jobs.EveryMonthJob;
 import com.uv.jobs.MyJob;
+import com.uv.other.ZipFileTest;
 import com.uv.services.AliConfig;
 import com.uv.services.AliESService;
 import org.slf4j.Logger;

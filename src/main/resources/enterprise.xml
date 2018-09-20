@@ -53,4 +53,13 @@
 	<insert id="insertTimeoutExceptionSUM" parameterType="com.uv.entity.CPTimeOutExceptionPerDay">
   		insert into CPTimeOutExceptionPerDay (exceptionCount,collectTime) values(#{exCount},#{collectTime})
   	</insert>
+
+	<!-- 近30天云+用户与PV -->
+	<insert id="insertCPUserPV" parameterType="com.uv.entity.CPUserPV">
+  		insert into CPUserPV (userID,userName,pvCount) values(#{userID},#{userName},#{pvCount})
+  	</insert>
+
+	<delete id = "deleteCPUserPV"  >
+        truncate table CPUserPV;
+    </delete>
 </mapper>

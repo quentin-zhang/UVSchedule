@@ -1,6 +1,7 @@
 package com.uv.services;
 
 import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
@@ -27,6 +28,13 @@ public class MyBatisUtil {
      */
     public static SqlSession getSqlSession(){
         return factory.openSession();
+    }
+
+    /**
+     * 获取BatchSqlSession对象
+     */
+    public static SqlSession getBatchSqlSession(){
+        return factory.openSession(ExecutorType.BATCH);
     }
 
     /**

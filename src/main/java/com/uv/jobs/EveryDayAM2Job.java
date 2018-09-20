@@ -1,7 +1,5 @@
 package com.uv.jobs;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.uv.entity.*;
 import com.uv.services.AliESService;
 import com.uv.services.MSSQLService;
@@ -40,6 +38,8 @@ public class EveryDayAM2Job implements Job {
         yesterdayExceptionCountPost();
         //昨日超时异常总数
         yesterdayTimeoutExceptionCountPost();
+        //近30天用户与PV
+        near30dayCPUserPV();
     }
 
     /*昨日活跃用户数*/
@@ -181,5 +181,23 @@ public class EveryDayAM2Job implements Job {
             e.printStackTrace();
         }
         return totalCount;
+    }
+
+    /*昨日超时异常总数获取*/
+    public void near30dayCPUserPV() {
+        logger.info("begin to batch insert CPUserPV");
+        try {
+            List<CPUserPV> auCount = new ArrayList<CPUserPV>();
+            LocalDateTime yesterday = LocalDate.now().minusDays(30).atStartOfDay();
+            LocalDateTime today = LocalDate.now().atStartOfDay();
+            String yesterdayStr = yesterday.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString();
+            String todayStr = today.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString();
+            auCount = aliESService.getCPUserPV(yesterdayStr, todayStr);
+            MSSQLService service = new MSSQLService();
+            service.insertCPUserPV(auCount);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        logger.info("end batch insert CPUserPV");
     }
 }
