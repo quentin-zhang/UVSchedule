@@ -10,7 +10,7 @@ public class MSSQLService {
     //所有企业昨天的活跃用户数
     public void insertYesterdayActiveUserCount(List<CPEPActiveUserCount> auCountList, String startTime) {
         // 获取SqlSession对象
-        SqlSession session = MyBatisUtil.getSqlSession();
+        SqlSession session = MyBatisUtil.getBatchSqlSession();
         for (CPEPActiveUserCount uc : auCountList) {
             uc.setCollectTime(startTime);
             session.insert("insertActiveUser", uc);
@@ -23,7 +23,7 @@ public class MSSQLService {
     //所有企业昨天的活跃用户数
     public void insertYesterdayPVCount(List<CPEPPVCount> auCountList, String startTime) {
         // 获取SqlSession对象
-        SqlSession session = MyBatisUtil.getSqlSession();
+        SqlSession session = MyBatisUtil.getBatchSqlSession();
         for (CPEPPVCount uc : auCountList) {
             uc.setCollectTime(startTime);
             session.insert("insertPV", uc);
@@ -36,7 +36,7 @@ public class MSSQLService {
     //所有企业昨天的异常数
     public void insertYesterdayEXCount(List<CPEPExceptionCount> auCountList, String startTime) {
         // 获取SqlSession对象
-        SqlSession session = MyBatisUtil.getSqlSession();
+        SqlSession session = MyBatisUtil.getBatchSqlSession();
         for (CPEPExceptionCount uc : auCountList) {
             uc.setCollectTime(startTime);
             session.insert("insertException", uc);
@@ -57,7 +57,7 @@ public class MSSQLService {
     //所有企业上月的活跃用户数
     public void insertMonthActiveUserCount(List<CPEPActiveUserCount> auCountList, String startTime) {
         // 获取SqlSession对象
-        SqlSession session = MyBatisUtil.getSqlSession();
+        SqlSession session = MyBatisUtil.getBatchSqlSession();
         for (CPEPActiveUserCount uc : auCountList) {
             uc.setCollectTime(startTime);
             session.insert("insertMonthActiveUser", uc);
@@ -70,7 +70,7 @@ public class MSSQLService {
     //所有企业上月PV
     public void insertMonthPVCount(List<CPEPPVCount> auCountList, String startTime) {
         // 获取SqlSession对象
-        SqlSession session = MyBatisUtil.getSqlSession();
+        SqlSession session = MyBatisUtil.getBatchSqlSession();
         for (CPEPPVCount uc : auCountList) {
             uc.setCollectTime(startTime);
             session.insert("insertMonthPV", uc);
@@ -83,7 +83,7 @@ public class MSSQLService {
     //所有企业上月异常
     public void insertMonthEXCount(List<CPEPExceptionCount> auCountList, String startTime) {
         // 获取SqlSession对象
-        SqlSession session = MyBatisUtil.getSqlSession();
+        SqlSession session = MyBatisUtil.getBatchSqlSession();
         for (CPEPExceptionCount uc : auCountList) {
             uc.setCollectTime(startTime);
             session.insert("insertMonthException", uc);
@@ -99,7 +99,7 @@ public class MSSQLService {
     //所有企业昨天总活
     public void insertYesterdaySumActiveUserCount(List<CPEPActiveUserCount> auCountList, String startTime) {
         // 获取SqlSession对象
-        SqlSession session = MyBatisUtil.getSqlSession();
+        SqlSession session = MyBatisUtil.getBatchSqlSession();
         for (CPEPActiveUserCount uc : auCountList) {
             uc.setCollectTime(startTime);
             session.insert("insertActiveUserSUM", uc);
@@ -112,7 +112,7 @@ public class MSSQLService {
     //所有企业昨天总PV
     public void insertYesterdaySumPVCount(List<CPEPPVCount> auCountList, String startTime) {
         // 获取SqlSession对象
-        SqlSession session = MyBatisUtil.getSqlSession();
+        SqlSession session = MyBatisUtil.getBatchSqlSession();
         for (CPEPPVCount uc : auCountList) {
             uc.setCollectTime(startTime);
             session.insert("insertPVSUM", uc);
@@ -125,7 +125,7 @@ public class MSSQLService {
     //所有企业昨天总异常
     public void insertYesterdaySumEXCount(List<CPEPExceptionCount> auCountList, String startTime) {
         // 获取SqlSession对象
-        SqlSession session = MyBatisUtil.getSqlSession();
+        SqlSession session = MyBatisUtil.getBatchSqlSession();
         for (CPEPExceptionCount uc : auCountList) {
             uc.setCollectTime(startTime);
             session.insert("insertExceptionSUM", uc);
@@ -139,7 +139,7 @@ public class MSSQLService {
     //所有超时异常数
     public void insertYesterdayTimeoutEXCount(List<CPTimeOutExceptionPerDay> auCountList, String startTime) {
         // 获取SqlSession对象
-        SqlSession session = MyBatisUtil.getSqlSession();
+        SqlSession session = MyBatisUtil.getBatchSqlSession();
         for (CPTimeOutExceptionPerDay uc : auCountList) {
             uc.setCollectTime(startTime);
             session.insert("insertTimeoutExceptionSUM", uc);
