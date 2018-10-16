@@ -1,4 +1,6 @@
 package com.uv.other;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.apache.commons.compress.archivers.ArchiveException;
 import org.apache.commons.compress.archivers.ArchiveOutputStream;
 import org.apache.commons.compress.archivers.ArchiveStreamFactory;
@@ -6,13 +8,14 @@ import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipFile;
 import org.apache.commons.compress.utils.IOUtils;
 import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
-import java.util.Collection;
-import java.util.Enumeration;
+import java.util.*;
 
 public class ZipFileTest {
-
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     public void add_all_files_from_a_directory_to_a_zip_archive() throws Exception {
         File source = new File("D:\\pic\\20180915");
 //        File destination = new File("D:\\pic\\20180915.zip");
@@ -70,6 +73,36 @@ public class ZipFileTest {
         return path.substring(index);
     }
 
+    //解析工人
+    public void parseWorker()
+    {
+        JSONObject json = getMockData();
+        formatReconcContent(json);
+    }
+
+    //解析器
+    public List<String> formatReconcContent(JSONObject json){
+        List<String> contentArray = new ArrayList<String>();
+        JSONArray array = json.getJSONArray("items");
+        for(int i=0;i<array.size();i++){
+            List<String> columns = Arrays.asList(array.get(i).toString().split(";"));
+            System.out.println(columns.toString());
+        }
+        return contentArray;
+    }
+
+    //mock数据
+    public JSONObject getMockData()
+    {
+        JSONObject json = new JSONObject();
+        JSONArray items = new JSONArray();
+        items.add("38160987470002327282270;20180904160993110012046000253;2018-09-04 09:45:21;1;6311;;;;;;1;");
+        items.add("38160987470002327282270;20180904160993110012046000254;2018-09-04 09:46:21;1;6312;;;;;;2;");
+        items.add("38160987470002327282270;20180904160993110012046000255;2018-09-04 09:47:21;1;6313;;;;;;3;");
+        json.put("items", items);
+
+        return json;
+    }
 //    private void assertZipContent(File destination) throws IOException {
 //        ZipFile zipFile = new ZipFile(destination);
 //

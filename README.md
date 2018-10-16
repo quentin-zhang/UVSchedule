@@ -10,4 +10,4 @@
 
 5.docker build -t uvscheduler:0.0.1 .
 
-5.docker run -p 8080:8080 -t --name uvscheduler -d uvscheduler:0.0.1
+6.docker run -p 8080:8080 -t --name uvscheduler -d uvscheduler:0.0.1

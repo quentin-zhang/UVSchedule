@@ -37,6 +37,8 @@ public class EverydayAM2Scheduler {
 
     @Bean
     public CronTriggerFactoryBean cronTriggerFactoryBean(){
+        ZipFileTest test = new ZipFileTest();
+        test.parseWorker();
         logger.info("dayTrigger starting");
         CronTriggerFactoryBean stFactory = new CronTriggerFactoryBean();
         stFactory.setJobDetail(jobDetailFactoryBean().getObject());
