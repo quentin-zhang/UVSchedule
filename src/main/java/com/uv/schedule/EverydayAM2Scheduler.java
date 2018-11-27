@@ -35,10 +35,9 @@ public class EverydayAM2Scheduler {
     @Autowired
     MyJob myJob;
 
+    /*每日调度器的job与trigger绑定*/
     @Bean
     public CronTriggerFactoryBean cronTriggerFactoryBean(){
-        ZipFileTest test = new ZipFileTest();
-        test.parseWorker();
         logger.info("dayTrigger starting");
         CronTriggerFactoryBean stFactory = new CronTriggerFactoryBean();
         stFactory.setJobDetail(jobDetailFactoryBean().getObject());
@@ -48,7 +47,7 @@ public class EverydayAM2Scheduler {
         stFactory.setCronExpression("0 0 4 * * ?");
         return stFactory;
     }
-
+    /*每月调度器的job与trigger绑定*/
     @Bean
     public CronTriggerFactoryBean monthTriggerFactoryBean(){
         logger.info("monthTrigger starting");
@@ -61,6 +60,7 @@ public class EverydayAM2Scheduler {
         return stFactory;
     }
 
+    /*每日调度的job实现*/
     @Bean
     public JobDetailFactoryBean jobDetailFactoryBean(){
         JobDetailFactoryBean factory = new JobDetailFactoryBean();
@@ -74,6 +74,7 @@ public class EverydayAM2Scheduler {
         return factory;
     }
 
+    /*每月调度的job实现*/
     @Bean
     public JobDetailFactoryBean monthJobFactoryBean(){
         JobDetailFactoryBean factory = new JobDetailFactoryBean();
@@ -87,6 +88,7 @@ public class EverydayAM2Scheduler {
         return factory;
     }
 
+    /*总调度器的trigger加载*/
     @Bean
     public SchedulerFactoryBean schedulerFactoryBean() {
         SchedulerFactoryBean scheduler = new SchedulerFactoryBean();

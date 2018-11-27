@@ -44,64 +44,79 @@ public class EveryDayAM2Job implements Job {
 
     /*昨日活跃用户数*/
     private void yesterdayActiveUserCountPost() {
+        LocalDateTime yesterday = LocalDate.now().minusDays(1).atStartOfDay();
+        LocalDateTime today = LocalDate.now().atStartOfDay();
+        String yesterdayStr = yesterday.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString();
+        String todayStr = today.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString();
         try {
             List<CPEPActiveUserCount> auCount = new ArrayList<CPEPActiveUserCount>();
-            LocalDateTime yesterday = LocalDate.now().minusDays(1).atStartOfDay();
-            LocalDateTime today = LocalDate.now().atStartOfDay();
-            String yesterdayStr = yesterday.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString();
-            String todayStr = today.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString();
+
             auCount = aliESService.getActiveUserCount(yesterdayStr, todayStr);
             MSSQLService service = new MSSQLService();
             service.insertYesterdayActiveUserCount(auCount, yesterdayStr);
 
+
+        } catch (IOException e) {
+            logger.error(e.getMessage());
+        }
+
+        try{
             //汇总活跃用户数
-            int totalCount = this.allActiveUserCount(auCount);
+            MSSQLService service = new MSSQLService();
+            int totalCount = aliESService.GetYesterdayActiveUserCount(yesterdayStr,todayStr);
             List<CPEPActiveUserCount> sumList = new ArrayList<CPEPActiveUserCount>();
             CPEPActiveUserCount sumOne = new CPEPActiveUserCount();
             sumOne.setCollectTime(yesterdayStr);
             sumOne.setUserCount(totalCount);
             sumList.add(sumOne);
             service.insertYesterdaySumActiveUserCount(sumList,yesterdayStr);
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-
-
+        catch(Exception e)
+        {
+            logger.error(e.getMessage());
+        }
     }
 
     /*昨日PV数获取*/
     public void yesterdayPVCountPost() {
+        LocalDateTime yesterday = LocalDate.now().minusDays(1).atStartOfDay();
+        LocalDateTime today = LocalDate.now().atStartOfDay();
+        String yesterdayStr = yesterday.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString();
+        String todayStr = today.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString();
+
         try {
-            LocalDateTime yesterday = LocalDate.now().minusDays(1).atStartOfDay();
-            LocalDateTime today = LocalDate.now().atStartOfDay();
-            String yesterdayStr = yesterday.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString();
-            String todayStr = today.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString();
             List<CPEPPVCount> pvCount = new ArrayList<CPEPPVCount>();
             pvCount = aliESService.gePVCount(yesterdayStr, todayStr);
             MSSQLService service = new MSSQLService();
             service.insertYesterdayPVCount(pvCount, yesterdayStr);
-
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try{
             //汇总PV数
-            int totalCount = this.allPVCount(pvCount);
+            MSSQLService service = new MSSQLService();
+            int totalCount = aliESService.GetYesterdayPVCount(yesterdayStr,todayStr);
             List<CPEPPVCount> sumList = new ArrayList<CPEPPVCount>();
             CPEPPVCount sumOne = new CPEPPVCount();
             sumOne.setCollectTime(yesterdayStr);
             sumOne.setPvCount(totalCount);
             sumList.add(sumOne);
             service.insertYesterdaySumPVCount(sumList,yesterdayStr);
-        } catch (IOException e) {
-            e.printStackTrace();
+        }
+        catch(Exception e)
+        {
+            logger.error(e.getMessage());
         }
     }
 
     /*昨日异常数获取*/
     public void yesterdayExceptionCountPost() {
+        LocalDateTime yesterday = LocalDate.now().minusDays(1).atStartOfDay();
+        LocalDateTime today = LocalDate.now().atStartOfDay();
+        String yesterdayStr = yesterday.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString();
+        String todayStr = today.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString();
         try {
             List<CPEPExceptionCount> auCount = new ArrayList<CPEPExceptionCount>();
-            LocalDateTime yesterday = LocalDate.now().minusDays(1).atStartOfDay();
-            LocalDateTime today = LocalDate.now().atStartOfDay();
-            String yesterdayStr = yesterday.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString();
-            String todayStr = today.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString();
             auCount = aliESService.getExceptionCount(yesterdayStr, todayStr);
             MSSQLService service = new MSSQLService();
             service.insertYesterdayEXCount(auCount, yesterdayStr);
@@ -115,7 +130,22 @@ public class EveryDayAM2Job implements Job {
             sumList.add(sumOne);
             service.insertYesterdaySumEXCount(sumList,yesterdayStr);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
+        }
+        try{
+            //汇总异常数
+            MSSQLService service = new MSSQLService();
+            int totalCount = aliESService.GetYesterdayExceptionCount(yesterdayStr,todayStr);
+            List<CPEPExceptionCount> sumList = new ArrayList<CPEPExceptionCount>();
+            CPEPExceptionCount sumOne = new CPEPExceptionCount();
+            sumOne.setCollectTime(yesterdayStr);
+            sumOne.setExCount(totalCount);
+            sumList.add(sumOne);
+            service.insertYesterdaySumEXCount(sumList,yesterdayStr);
+        }
+        catch(Exception e)
+        {
+            logger.error(e.getMessage());
         }
     }
 
@@ -140,7 +170,7 @@ public class EveryDayAM2Job implements Job {
             service.insertYesterdayTimeoutEXCount(auCountList, yesterdayStr);
 
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
     }
 
@@ -152,7 +182,7 @@ public class EveryDayAM2Job implements Job {
                 totalCount += au.getUserCount();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
         return totalCount;
     }
@@ -165,7 +195,7 @@ public class EveryDayAM2Job implements Job {
                 totalCount += au.getPvCount();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
         return totalCount;
     }
@@ -178,7 +208,7 @@ public class EveryDayAM2Job implements Job {
                 totalCount += au.getExCount();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
         return totalCount;
     }
@@ -196,7 +226,7 @@ public class EveryDayAM2Job implements Job {
             MSSQLService service = new MSSQLService();
             service.insertCPUserPV(auCount);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
         logger.info("end batch insert CPUserPV");
     }
