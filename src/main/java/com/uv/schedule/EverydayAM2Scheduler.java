@@ -4,7 +4,7 @@ package com.uv.schedule;
 import com.uv.jobs.EveryDayAM2Job;
 import com.uv.jobs.EveryMonthJob;
 import com.uv.jobs.MyJob;
-import com.uv.other.ZipFileTest;
+import com.uv.other.JsonToSqlText;
 import com.uv.services.AliConfig;
 import com.uv.services.AliESService;
 import org.slf4j.Logger;
@@ -38,6 +38,8 @@ public class EverydayAM2Scheduler {
     /*每日调度器的job与trigger绑定*/
     @Bean
     public CronTriggerFactoryBean cronTriggerFactoryBean(){
+        JsonToSqlText text = new JsonToSqlText();
+        text.convert();
         logger.info("dayTrigger starting");
         CronTriggerFactoryBean stFactory = new CronTriggerFactoryBean();
         stFactory.setJobDetail(jobDetailFactoryBean().getObject());

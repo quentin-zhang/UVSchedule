@@ -1,4 +1,4 @@
-package com.uv.other;
+package com.uv.schedule;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.compress.archivers.ArchiveException;
