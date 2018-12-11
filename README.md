@@ -23,7 +23,9 @@
 3.cd /opt/GithubRepository/UVSchedule/target
 
 4.cp /opt/GithubRepository/UVSchedule/target/uvschedule-0.0.1-SNAPSHOT.jar /usr/local/dockerapp/uvsum/
+
   cp /opt/GithubRepository/UVSchedule/Dockerfile /usr/local/dockerapp/uvsum/
+  
   cd /usr/local/dockerapp/uvsum
   
 5.docker build -t uvscheduler:0.0.2 .

@@ -166,9 +166,7 @@ public class MSSQLService {
     public void insertDirect(String sql) {
         // 获取SqlSession对象
         SqlSession session = MyBatisUtil.getBatchSqlSession();
-
          session.insert("insertDirect", sql);
-
         session.commit();
         // 关闭SqlSession对象
         MyBatisUtil.closeSqlSession(session);
