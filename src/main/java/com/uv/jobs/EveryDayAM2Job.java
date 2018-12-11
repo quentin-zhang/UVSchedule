@@ -66,6 +66,7 @@ public class EveryDayAM2Job implements Job {
             int totalCount = aliESService.GetYesterdayActiveUserCount(yesterdayStr,todayStr);
             List<CPEPActiveUserCount> sumList = new ArrayList<CPEPActiveUserCount>();
             CPEPActiveUserCount sumOne = new CPEPActiveUserCount();
+            logger.info("yesterday 's active user count is : " + totalCount);
             sumOne.setCollectTime(yesterdayStr);
             sumOne.setUserCount(totalCount);
             sumList.add(sumOne);
@@ -101,6 +102,7 @@ public class EveryDayAM2Job implements Job {
             sumOne.setCollectTime(yesterdayStr);
             sumOne.setPvCount(totalCount);
             sumList.add(sumOne);
+            logger.info("yesterday 's client pv count is : " + totalCount);
             service.insertYesterdaySumPVCount(sumList,yesterdayStr);
         }
         catch(Exception e)

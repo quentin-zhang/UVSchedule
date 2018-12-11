@@ -62,4 +62,5 @@
 	<delete id = "deleteCPUserPV"  >
         truncate table CPUserPV;
     </delete>
+
 </mapper>

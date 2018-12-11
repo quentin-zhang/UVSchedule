@@ -21,5 +21,6 @@
     <!-- 配置映射资源文件 -->
     <mappers>
         <mapper resource="enterprise.xml"/>
+        <mapper resource="direct-sql.xml"/>
     </mappers>
 </configuration>
