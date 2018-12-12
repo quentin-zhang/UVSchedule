@@ -12,12 +12,19 @@ import java.io.InputStream;
 public class MyBatisUtil {
     //创建SqlSessionFactory对象
     private static SqlSessionFactory factory;
+
+    public static SqlSession getForeverSession() {
+        return foreverSession;
+    }
+
+    private static SqlSession foreverSession;
     static{
         try {
             //获取配置文件资源
             InputStream inputStream = Resources.getResourceAsStream("mybatis-config.xml");
             //获取SqlSessionFactory对象
             factory=new SqlSessionFactoryBuilder().build(inputStream);
+            openForeverSession();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -29,6 +36,21 @@ public class MyBatisUtil {
     public static SqlSession getSqlSession(){
         return factory.openSession();
     }
+
+    public static SqlSession openForeverSession()
+    {
+        foreverSession = factory.openSession();
+        return foreverSession;
+    }
+
+    public static void closeForeverSession()
+    {
+        if(foreverSession != null)
+        {
+            foreverSession.close();
+        }
+    }
+
 
     /**
      * 获取BatchSqlSession对象
