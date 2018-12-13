@@ -165,10 +165,10 @@ public class MSSQLService {
     //直接插入
     public void insertDirect(String sql) {
         // 获取SqlSession对象
-        SqlSession session = MyBatisUtil.getForeverSession();
-         session.insert("insertDirect", sql);
+        SqlSession session = MyBatisUtil.getSimpleSqlSession();
+        session.insert("insertDirect", sql);
         session.commit();
-//        // 关闭SqlSession对象
-//        MyBatisUtil.closeSqlSession(session);
+        // 关闭SqlSession对象
+        MyBatisUtil.closeSqlSession(session);
     }
 }

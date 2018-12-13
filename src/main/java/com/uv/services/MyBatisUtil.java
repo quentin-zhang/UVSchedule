@@ -24,7 +24,7 @@ public class MyBatisUtil {
             InputStream inputStream = Resources.getResourceAsStream("mybatis-config.xml");
             //获取SqlSessionFactory对象
             factory=new SqlSessionFactoryBuilder().build(inputStream);
-            openForeverSession();
+//            openForeverSession();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -57,6 +57,10 @@ public class MyBatisUtil {
      */
     public static SqlSession getBatchSqlSession(){
         return factory.openSession(ExecutorType.BATCH);
+    }
+
+    public static SqlSession getSimpleSqlSession(){
+        return factory.openSession(ExecutorType.SIMPLE);
     }
 
     /**
