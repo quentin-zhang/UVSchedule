@@ -30,4 +30,23 @@
   
 5.docker build -t uvscheduler:0.0.2 .
 
+### docker 运行
 6.docker run -p 8080:8080 -t --name uvscheduler -d uvscheduler:0.0.2
+
+### docker-compose 运行
+docker-compose up -d
+docker-compose down --volume
+
+## docker-compose.yml 配置
+
+version: '3'
+services:
+  uvscheduler:
+    image: uvscheduler:0.0.2
+    ports:
+      - "8080:8080"
+    logging:
+      driver: gelf
+      options:
+        gelf-address: udp://xx.xx.xx.xx:12201
+        tag: "uvscheduler"
