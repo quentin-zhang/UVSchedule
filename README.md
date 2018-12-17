@@ -20,11 +20,11 @@
 
 2.mvn package
 
-3.cp /opt/githubrepository/UVSchedule/target/uvschedule-0.0.1-SNAPSHOT.jar /usr/local/dockerapp/uvsum/
+3.cp /opt/githubrepository/UVSchedule/target/uvschedule-0.0.1-SNAPSHOT.jar /opt/app/uv-sum/
 
-4.cp /opt/githubrepository/UVSchedule/Dockerfile /usr/local/dockerapp/uvsum/
+4.cp /opt/githubrepository/UVSchedule/Dockerfile /opt/app/uv-sum/
   
-5. cd /usr/local/dockerapp/uvsum
+5. cd /opt/app/uv-sum/
   
 6. docker build -t uvscheduler:0.0.2 .
 
