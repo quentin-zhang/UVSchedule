@@ -45,7 +45,7 @@ public class EverydayAM2Scheduler {
         stFactory.setStartDelay(3000);
         stFactory.setName("mytrigger");
         stFactory.setGroup("mygroup");
-        stFactory.setCronExpression("0 10 7 * * ?");
+        stFactory.setCronExpression("0 0 4 * * ?");
         return stFactory;
     }
     /*每月调度器的job与trigger绑定*/
