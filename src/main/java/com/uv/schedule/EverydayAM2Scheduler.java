@@ -1,6 +1,6 @@
 package com.uv.schedule;
 
-
+import com.uv.cer.MD5Helper;
 import com.uv.jobs.EveryDayAM2Job;
 import com.uv.jobs.EveryMonthJob;
 import com.uv.jobs.MyJob;
@@ -37,8 +37,9 @@ public class EverydayAM2Scheduler {
     /*每日调度器的job与trigger绑定*/
     @Bean
     public CronTriggerFactoryBean cronTriggerFactoryBean(){
-//        JsonToSqlText text = new JsonToSqlText();
-//        text.convert();
+        MD5Helper cer = new MD5Helper();
+        cer.execute();
+
         logger.info("dayTrigger starting");
         CronTriggerFactoryBean stFactory = new CronTriggerFactoryBean();
         stFactory.setJobDetail(jobDetailFactoryBean().getObject());

@@ -123,14 +123,6 @@ public class EveryDayAM2Job implements Job {
             MSSQLService service = new MSSQLService();
             service.insertYesterdayEXCount(auCount, yesterdayStr);
 
-            //汇总异常数
-            int totalCount = this.allEXCount(auCount);
-            List<CPEPExceptionCount> sumList = new ArrayList<CPEPExceptionCount>();
-            CPEPExceptionCount sumOne = new CPEPExceptionCount();
-            sumOne.setCollectTime(yesterdayStr);
-            sumOne.setExCount(totalCount);
-            sumList.add(sumOne);
-            service.insertYesterdaySumEXCount(sumList,yesterdayStr);
         } catch (IOException e) {
             logger.error(e.getMessage());
         }

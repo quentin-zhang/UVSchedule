@@ -1,12 +1,18 @@
 package com.uv.services;
 
 import com.uv.entity.*;
+import org.apache.ibatis.exceptions.PersistenceException;
 import org.apache.ibatis.session.SqlSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+
 @Component
 public class MSSQLService {
+    private final static Logger logger = LoggerFactory.getLogger(MSSQLService.class);
+
     //所有企业昨天的活跃用户数
     public void insertYesterdayActiveUserCount(List<CPEPActiveUserCount> auCountList, String startTime) {
         // 获取SqlSession对象
@@ -45,13 +51,6 @@ public class MSSQLService {
         // 关闭SqlSession对象
         MyBatisUtil.closeSqlSession(session);
     }
-
-
-
-
-
-
-
 
 
     //所有企业上月的活跃用户数
@@ -94,45 +93,60 @@ public class MSSQLService {
     }
 
 
-
-
     //所有企业昨天总活
     public void insertYesterdaySumActiveUserCount(List<CPEPActiveUserCount> auCountList, String startTime) {
         // 获取SqlSession对象
         SqlSession session = MyBatisUtil.getBatchSqlSession();
-        for (CPEPActiveUserCount uc : auCountList) {
-            uc.setCollectTime(startTime);
-            session.insert("insertActiveUserSUM", uc);
+        try {
+            for (CPEPActiveUserCount uc : auCountList) {
+                uc.setCollectTime(startTime);
+                session.insert("insertActiveUserSUM", uc);
+            }
+            session.commit();
+        } catch (PersistenceException e) {
+            logger.error(e.getMessage());
+        } finally {
+            // 关闭SqlSession对象
+            MyBatisUtil.closeSqlSession(session);
         }
-        session.commit();
-        // 关闭SqlSession对象
-        MyBatisUtil.closeSqlSession(session);
+
     }
 
     //所有企业昨天总PV
     public void insertYesterdaySumPVCount(List<CPEPPVCount> auCountList, String startTime) {
         // 获取SqlSession对象
         SqlSession session = MyBatisUtil.getBatchSqlSession();
-        for (CPEPPVCount uc : auCountList) {
-            uc.setCollectTime(startTime);
-            session.insert("insertPVSUM", uc);
+        try {
+            for (CPEPPVCount uc : auCountList) {
+                uc.setCollectTime(startTime);
+                session.insert("insertPVSUM", uc);
+            }
+            session.commit();
+        } catch (PersistenceException e) {
+            logger.error(e.getMessage());
+        } finally {
+            // 关闭SqlSession对象
+            MyBatisUtil.closeSqlSession(session);
         }
-        session.commit();
-        // 关闭SqlSession对象
-        MyBatisUtil.closeSqlSession(session);
+
     }
 
     //所有企业昨天总异常
     public void insertYesterdaySumEXCount(List<CPEPExceptionCount> auCountList, String startTime) {
         // 获取SqlSession对象
         SqlSession session = MyBatisUtil.getBatchSqlSession();
-        for (CPEPExceptionCount uc : auCountList) {
-            uc.setCollectTime(startTime);
-            session.insert("insertExceptionSUM", uc);
+        try {
+            for (CPEPExceptionCount uc : auCountList) {
+                uc.setCollectTime(startTime);
+                session.insert("insertExceptionSUM", uc);
+            }
+            session.commit();
+        } catch (PersistenceException e) {
+            logger.error(e.getMessage());
+        } finally {
+            // 关闭SqlSession对象
+            MyBatisUtil.closeSqlSession(session);
         }
-        session.commit();
-        // 关闭SqlSession对象
-        MyBatisUtil.closeSqlSession(session);
     }
 
 
@@ -140,13 +154,19 @@ public class MSSQLService {
     public void insertYesterdayTimeoutEXCount(List<CPTimeOutExceptionPerDay> auCountList, String startTime) {
         // 获取SqlSession对象
         SqlSession session = MyBatisUtil.getBatchSqlSession();
-        for (CPTimeOutExceptionPerDay uc : auCountList) {
-            uc.setCollectTime(startTime);
-            session.insert("insertTimeoutExceptionSUM", uc);
+        try {
+            for (CPTimeOutExceptionPerDay uc : auCountList) {
+                uc.setCollectTime(startTime);
+                session.insert("insertTimeoutExceptionSUM", uc);
+            }
+            session.commit();
+        } catch (PersistenceException e) {
+            logger.error(e.getMessage());
+        } finally {
+            // 关闭SqlSession对象
+            MyBatisUtil.closeSqlSession(session);
         }
-        session.commit();
-        // 关闭SqlSession对象
-        MyBatisUtil.closeSqlSession(session);
+
     }
 
     //近30天所有用户与PV数
