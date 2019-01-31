@@ -318,7 +318,7 @@ public class AliESService {
         myMap.put("indexName", "cloudplus-exception-*");
         myMap.put("timeKey", "happenTime");
         myMap.put("conditionKey", "_type");
-        myMap.put("conditionValue", "logs");
+        myMap.put("conditionValue", "cloudplus-exception");
 
         Gson gson = new Gson();
         String json = gson.toJson(myMap);

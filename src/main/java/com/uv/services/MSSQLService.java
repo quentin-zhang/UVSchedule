@@ -39,7 +39,7 @@ public class MSSQLService {
         MyBatisUtil.closeSqlSession(session);
     }
 
-    //所有企业昨天的异常数
+    //各个企业昨天的异常数
     public void insertYesterdayEXCount(List<CPEPExceptionCount> auCountList, String startTime) {
         // 获取SqlSession对象
         SqlSession session = MyBatisUtil.getBatchSqlSession();
@@ -53,7 +53,7 @@ public class MSSQLService {
     }
 
 
-    //所有企业上月的活跃用户数
+    //各个企业上月的活跃用户数
     public void insertMonthActiveUserCount(List<CPEPActiveUserCount> auCountList, String startTime) {
         // 获取SqlSession对象
         SqlSession session = MyBatisUtil.getBatchSqlSession();
@@ -66,7 +66,7 @@ public class MSSQLService {
         MyBatisUtil.closeSqlSession(session);
     }
 
-    //所有企业上月PV
+    //各个企业上月PV
     public void insertMonthPVCount(List<CPEPPVCount> auCountList, String startTime) {
         // 获取SqlSession对象
         SqlSession session = MyBatisUtil.getBatchSqlSession();

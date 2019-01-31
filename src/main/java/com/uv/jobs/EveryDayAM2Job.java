@@ -39,7 +39,7 @@ public class EveryDayAM2Job implements Job {
         //昨日超时异常总数
         yesterdayTimeoutExceptionCountPost();
         //近30天用户与PV
-        near30dayCPUserPV();
+//        near30dayCPUserPV();
     }
 
     /*昨日活跃用户数*/
@@ -130,12 +130,15 @@ public class EveryDayAM2Job implements Job {
             //汇总异常数
             MSSQLService service = new MSSQLService();
             int totalCount = aliESService.GetYesterdayExceptionCount(yesterdayStr,todayStr);
+            logger.info("yesterday 's cp exception count is : " + totalCount);
             List<CPEPExceptionCount> sumList = new ArrayList<CPEPExceptionCount>();
             CPEPExceptionCount sumOne = new CPEPExceptionCount();
             sumOne.setCollectTime(yesterdayStr);
             sumOne.setExCount(totalCount);
             sumList.add(sumOne);
+            logger.info("begin insert cp exception... " );
             service.insertYesterdaySumEXCount(sumList,yesterdayStr);
+            logger.info("end to insert cp exception... ");
         }
         catch(Exception e)
         {
