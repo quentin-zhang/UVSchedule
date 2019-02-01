@@ -14,11 +14,10 @@ public class MSSQLService {
     private final static Logger logger = LoggerFactory.getLogger(MSSQLService.class);
 
     //所有企业昨天的活跃用户数
-    public void insertYesterdayActiveUserCount(List<CPEPActiveUserCount> auCountList, String startTime) {
+    public void insertYesterdayActiveUserCount(List<CPEPActiveUserCount> auCountList) {
         // 获取SqlSession对象
         SqlSession session = MyBatisUtil.getBatchSqlSession();
         for (CPEPActiveUserCount uc : auCountList) {
-            uc.setCollectTime(startTime);
             session.insert("insertActiveUser", uc);
         }
         session.commit();

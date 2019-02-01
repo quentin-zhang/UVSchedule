@@ -52,8 +52,18 @@ public class EveryDayAM2Job implements Job {
             List<CPEPActiveUserCount> auCount = new ArrayList<CPEPActiveUserCount>();
 
             auCount = aliESService.getActiveUserCount(yesterdayStr, todayStr);
+            List<CPEPActiveUserCount> newList = new ArrayList<CPEPActiveUserCount>();
+            for(CPEPActiveUserCount one : auCount)
+            {
+                CPEPActiveUserCount newOne = new CPEPActiveUserCount();
+                newOne.setCollectTime(yesterdayStr);
+                newOne.setEnterpriseID(one.getEnterpriseID());
+                newOne.setUserCount(one.getUserCount());
+                newList.add(newOne);
+                logger.info(newOne.toString());
+            }
             MSSQLService service = new MSSQLService();
-            service.insertYesterdayActiveUserCount(auCount, yesterdayStr);
+            service.insertYesterdayActiveUserCount(newList);
 
 
         } catch (IOException e) {
