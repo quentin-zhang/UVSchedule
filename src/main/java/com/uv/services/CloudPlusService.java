@@ -2,11 +2,13 @@ package com.uv.services;
 
 
 import com.uv.entity.CPEPActiveUserCount;
+import com.uv.entity.CPEPExceptionCount;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,5 +37,17 @@ public class CloudPlusService {
         {
             logger.error(e.getMessage());
         }
+    }
+
+    public void insertSumExceptionCount(String yesterdayStr,String todayStr) throws IOException {
+        MSSQLService service = new MSSQLService();
+        int totalCount = aliESService.GetYesterdayExceptionCount(yesterdayStr,todayStr);
+        logger.info("yesterday 's cp exception count is : " + totalCount);
+        List<CPEPExceptionCount> sumList = new ArrayList<CPEPExceptionCount>();
+        CPEPExceptionCount sumOne = new CPEPExceptionCount();
+        sumOne.setCollectTime(yesterdayStr);
+        sumOne.setExCount(totalCount);
+        sumList.add(sumOne);
+        service.insertYesterdaySumEXCount(sumList,yesterdayStr);
     }
 }
